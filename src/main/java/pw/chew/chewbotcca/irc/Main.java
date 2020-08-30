@@ -1,6 +1,9 @@
 package pw.chew.chewbotcca.irc;
 
 import org.kitteh.irc.client.library.Client;
+import pw.chew.chewbotcca.irc.commands.PingCommand;
+import pw.chew.chewbotcca.irc.handler.MessageHandler;
+import pw.chew.chewbotcca.irc.util.CommandManager;
 import pw.chew.chewbotcca.irc.util.PropertiesManager;
 
 import java.io.FileInputStream;
@@ -12,6 +15,8 @@ public class Main {
         Properties prop = new Properties();
         prop.load(new FileInputStream("bot.properties"));
         PropertiesManager.loadProperties(prop);
+
+        CommandManager.loadCommands(new PingCommand());
 
         Client client = Client.builder()
                 .nick(PropertiesManager.getNickname())
@@ -25,6 +30,6 @@ public class Main {
                 .buildAndConnect();
 
         client.addChannel(PropertiesManager.getChannels());
-        client.sendMessage("#Chewbotcca", "meow!");
+        client.getEventManager().registerEventListener(new MessageHandler());
     }
 }
