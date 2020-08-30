@@ -1,7 +1,8 @@
 package pw.chew.chewbotcca.irc;
 
 import org.kitteh.irc.client.library.Client;
-import pw.chew.chewbotcca.irc.commands.PingCommand;
+import pw.chew.chewbotcca.irc.commands.about.AboutCommand;
+import pw.chew.chewbotcca.irc.commands.about.PingCommand;
 import pw.chew.chewbotcca.irc.handler.MessageHandler;
 import pw.chew.chewbotcca.irc.util.CommandManager;
 import pw.chew.chewbotcca.irc.util.PropertiesManager;
@@ -16,7 +17,11 @@ public class Main {
         prop.load(new FileInputStream("bot.properties"));
         PropertiesManager.loadProperties(prop);
 
-        CommandManager.loadCommands(new PingCommand());
+        CommandManager.loadCommands(
+                // About Module
+                new AboutCommand(),
+                new PingCommand()
+        );
 
         Client client = Client.builder()
                 .nick(PropertiesManager.getNickname())
